@@ -6,12 +6,13 @@ import { Icon } from "astro-icon/components";
 import {
 	commentConfig,
 	friendsPageConfig,
-	getEnabledFriends,
 	siteConfig,
 } from "@/config";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { getAllFLinks } from "@/utils/cms-api";
+import type { FriendLink } from "@/types/config";
 
 // 检查页面是否启用
 if (!siteConfig.pages.friends) {
@@ -32,8 +33,29 @@ const isCommentEnabled =
 	commentConfig.type !== "none" &&
 	friendsPageConfig.showComment !== false;
 
-// 使用配置文件中的友链数据，按权重排序
-const items = getEnabledFriends();
+// 从 CMS API 获取友链数据
+let items: FriendLink[] = [];
+try {
+	const cmsFLinks = await getAllFLinks();
+	// 将 CMS 数据转换为 FriendLink 格式
+	items = cmsFLinks
+		.filter((flink) => flink.status === 1) // status: 1 表示启用
+		.map((flink) => ({
+			title: flink.name,
+			imgurl: flink.avatar_url || "",
+			desc: flink.description || "",
+			siteurl: flink.url || "",
+			tags: flink.group ? [flink.group.name] : [],
+			weight: 0, // CMS 中没有权重字段，默认为 0
+			enabled: flink.status === 1,
+		}))
+		.sort((a, b) => b.weight - a.weight);
+} catch (error) {
+	console.error("Failed to fetch friends from CMS:", error);
+	// 如果 CMS 获取失败，使用空数组
+	items = [];
+}
+
 const allTags = [...new Set(items.flatMap((item) => item.tags || []))].sort();
 
 // 页面标题和描述

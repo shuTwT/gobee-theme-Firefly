@@ -1,0 +1,4 @@
+type: setting
+forms:
+  - group: base
+    label: 基础设置

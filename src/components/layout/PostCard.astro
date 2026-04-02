@@ -43,6 +43,7 @@ const {
 } = Astro.props;
 const className = Astro.props.class;
 
+
 // 处理随机图：如果image为"api"，则从配置的API获取随机图
 const processedImage = processCoverImageSync(image, entry.id);
 const apiUrls = getApiUrlList(image, entry.id);

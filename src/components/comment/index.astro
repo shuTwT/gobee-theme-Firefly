@@ -9,9 +9,10 @@ import Disqus from "./Disqus.astro";
 import Giscus from "./Giscus.astro";
 import Twikoo from "./Twikoo.astro";
 import Waline from "./Waline.astro";
+import type { CMSPostAdapter } from "@utils/cms-adapter";
 
 interface Props {
-	post?: CollectionEntry<"posts"> | CollectionEntry<"spec">;
+	post?: CMSPostAdapter | CollectionEntry<"spec">;
 	customPath?: string;
 	title?: string;
 }

@@ -1,0 +1,16 @@
+type: theme
+name: hoshikuzu-theme-firefly #唯一的
+display-name: 主题Firefly #后台显示的名字
+description: 一款清新美观的 Astro 静态博客主题模板 #描述
+author: #作者信息
+  name: 张三
+  email: zhangsan@example.com
+logo:
+homepage:
+repo:
+issue:
+setting-name:
+config-map-name:
+version: v0.0.1 #格式需要vx.y.z
+require: "*" #支持任何版本的hoshikuzu,版本格式需要vx.y.z
+license: MIT
